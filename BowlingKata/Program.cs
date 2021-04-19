@@ -11,7 +11,7 @@ namespace BowlingKata
     }
     public class Bowling
     {
-
+        
         private int cantidadPinosDelTurno = 10;
         private const int cantidadMaxTiradasPorTurno = 2;
         Turno turno = new Turno();
@@ -54,6 +54,12 @@ namespace BowlingKata
                 return false;
             }
             return true;
+        }
+
+        public int CalcularPuntuacion(int cantidadBolosTirados)
+        {
+            int puntuacion = cantidadBolosTirados;
+            return puntuacion;
         }
     }
 

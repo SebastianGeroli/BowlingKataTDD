@@ -56,5 +56,15 @@ namespace BowlingTest
             //Assert
             Assert.AreEqual(turnoEsperado, bowling.TurnoActual);
         }
+        [TestCase(0,0)]
+        [TestCase(8, 8)]
+        [TestCase(1,1)]
+        [TestCase(2,2)]
+        public void ValidarPuntuacionTurnoSinSpareSinStrike(int cantidadBolosTirados,int esperado) {
+            //When
+            int resultado = bowling.CalcularPuntuacion(cantidadBolosTirados);
+            //Assert
+            Assert.AreEqual(resultado, esperado);
+        }
     }
 }
