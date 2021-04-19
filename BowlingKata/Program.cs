@@ -61,6 +61,13 @@ namespace BowlingKata
             int puntuacion = cantidadBolosTirados;
             return puntuacion;
         }
+
+        public int ObtenerTiradasBonificadas(int turnoJugado, string tipoJugada)
+        {
+            if (turnoJugado >= turno.turnosMaximos - 1 && tipoJugada == "strike") return 2;
+            if (turnoJugado >= turno.turnosMaximos - 1 && tipoJugada == "spare") return 1;
+            return 0;
+        }
     }
 
     public class Turno
@@ -68,5 +75,6 @@ namespace BowlingKata
         public const int cantidadMaxTiradasPorTurno = 2;
         public int cantidadTiradasActuales = 0;
         public bool habilitado = true;
+        public int turnosMaximos = 10;
     }
 }
