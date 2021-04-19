@@ -65,5 +65,20 @@ namespace BowlingTest
             //Assert
             Assert.AreEqual(resultado, esperado);
         }
+
+        //Historia 10mo Turno
+        [TestCase(8, "", 0)]
+        [TestCase(9, "", 0)]
+        [TestCase(8, "strike", 0)]
+        [TestCase(8, "spare", 0)]
+        [TestCase(9, "strike", 2)]
+        [TestCase(9, "spare", 1)]
+        public void SumarTiradasBonificadas(int turnoJugado, string tipoJugada, int tiradasEsperadas)
+        {
+            //When
+            int resultado = bowling.ObtenerTiradasBonificadas(turnoJugado, tipoJugada);
+            //Assert
+            Assert.AreEqual(tiradasEsperadas, resultado);
+        }
     }
 }
