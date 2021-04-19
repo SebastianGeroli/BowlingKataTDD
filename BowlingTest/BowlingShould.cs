@@ -50,9 +50,8 @@ namespace BowlingTest
             //When
             foreach (var jugada in jugadas)
             {
-                bowling.TirarPinos(jugada);
+                bowling.RealizarTirada(jugada);
             }
-
             //Assert
             Assert.AreEqual(turnoEsperado, bowling.TurnoActual);
         }

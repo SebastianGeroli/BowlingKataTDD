@@ -11,10 +11,10 @@ namespace BowlingKata
     }
     public class Bowling
     {
-        
         private int cantidadPinosDelTurno = 10;
         private const int cantidadMaxTiradasPorTurno = 2;
         Turno turno = new Turno();
+        Turno[] turnos = new Turno[12];
         public int TurnoActual = 0;
         public bool ValidarPinos(int pinos)
         {
@@ -25,35 +25,40 @@ namespace BowlingKata
 
         public int TirarPinos(int pinos)
         {
-            turno.cantidadTiradasActuales++;
             int cantidadPinosAntesTirarda = cantidadPinosDelTurno;
-            cantidadPinosDelTurno = Math.Max(0, cantidadPinosDelTurno - pinos);
-            int result = cantidadPinosAntesTirarda - cantidadPinosDelTurno;
-
-
-            if (turno.cantidadTiradasActuales > 1)
-            {
-                cantidadPinosDelTurno = 10;
-                turno.cantidadTiradasActuales = 0;
-                TurnoActual++;
-            }
-            if (cantidadPinosDelTurno == 0)
-            {
-                turno.cantidadTiradasActuales = 0;
-                cantidadPinosDelTurno = 10;
-                TurnoActual++;
-            }
-            return result;
+            cantidadPinosDelTurno = Math.Max(0, cantidadPinosDelTurno-pinos);
+            return cantidadPinosAntesTirarda- cantidadPinosDelTurno;
         }
 
-        public bool RealizarTirada()
+        public void RealizarTirada(int pinos)
         {
-            turno.cantidadTiradasActuales++;
-            if (turno.cantidadTiradasActuales > cantidadMaxTiradasPorTurno)
+            // if(TurnoActual == 0){
+            //     turnos[0]= new Turno();
+            // }
+             turno.cantidadTiradasActuales++;           
+
+            int pinosRestantes = TirarPinos(pinos);
+
+            if (turno.cantidadTiradasActuales >= cantidadMaxTiradasPorTurno)
             {
-                return false;
+                cantidadPinosDelTurno = 10;
+                turno.cantidadTiradasActuales = 0;
+                TurnoActual++;
             }
-            return true;
+
+            // if(pinosRestantes ==  0 && turnos[TurnoActual].cantidadTiradasActuales == 0){
+            //     turnos[TurnoActual].esStrike = true;
+            // }else if(pinosRestantes == 0){
+            //     turnos[TurnoActual].esSpare = true;
+            // }
+
+            if (pinosRestantes == 0)
+            {
+                cantidadPinosDelTurno = 10;
+                turno.cantidadTiradasActuales = 0;
+                TurnoActual++;
+            }
+           
         }
 
         public int CalcularPuntuacion(int cantidadBolosTirados)
@@ -68,5 +73,8 @@ namespace BowlingKata
         public const int cantidadMaxTiradasPorTurno = 2;
         public int cantidadTiradasActuales = 0;
         public bool habilitado = true;
+        public bool esSpare;
+        public bool esStrike;
+        public int cantidadDePinosTirados;
     }
 }
