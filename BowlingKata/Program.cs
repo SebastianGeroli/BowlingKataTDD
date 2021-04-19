@@ -26,8 +26,8 @@ namespace BowlingKata
         public int TirarPinos(int pinos)
         {
             int cantidadPinosAntesTirarda = cantidadPinosDelTurno;
-            cantidadPinosDelTurno = Math.Max(0, cantidadPinosDelTurno-pinos);
-            return cantidadPinosAntesTirarda- cantidadPinosDelTurno;
+            cantidadPinosDelTurno = Math.Max(0, cantidadPinosDelTurno - pinos);
+            return cantidadPinosAntesTirarda - cantidadPinosDelTurno;
         }
 
         public void RealizarTirada(int pinos)
@@ -35,15 +35,14 @@ namespace BowlingKata
             // if(TurnoActual == 0){
             //     turnos[0]= new Turno();
             // }
-             turno.cantidadTiradasActuales++;           
 
-            int pinosRestantes = TirarPinos(pinos);
+            turno.cantidadTiradasActuales++;
 
-            if (turno.cantidadTiradasActuales >= cantidadMaxTiradasPorTurno)
+            TirarPinos(pinos);
+
+            if (turno.cantidadTiradasActuales >= cantidadMaxTiradasPorTurno || cantidadPinosDelTurno == 0)
             {
-                cantidadPinosDelTurno = 10;
-                turno.cantidadTiradasActuales = 0;
-                TurnoActual++;
+                ResetearTurno();
             }
 
             // if(pinosRestantes ==  0 && turnos[TurnoActual].cantidadTiradasActuales == 0){
@@ -52,13 +51,12 @@ namespace BowlingKata
             //     turnos[TurnoActual].esSpare = true;
             // }
 
-            if (pinosRestantes == 0)
-            {
-                cantidadPinosDelTurno = 10;
-                turno.cantidadTiradasActuales = 0;
-                TurnoActual++;
-            }
-           
+        }
+        void ResetearTurno()
+        {
+            cantidadPinosDelTurno = 10;
+            turno.cantidadTiradasActuales = 0;
+            TurnoActual++;
         }
 
         public int CalcularPuntuacion(int cantidadBolosTirados)
