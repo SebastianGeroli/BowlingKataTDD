@@ -6,16 +6,47 @@ namespace BowlingKata
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Hello World!");
+            Bowling bowling = new Bowling();
+            Console.WriteLine($"Realiza tu jugada!(numeros de 0 a 10)");
+            for(;;){
+                bowling.RealizarTirada(int.Parse(Console.ReadLine()));
+                Console.WriteLine($"Tu puntaje Actual es: {bowling.PuntuacionActual}");
+            }
         }
     }
     public class Bowling
     {
         private int cantidadPinosDelTurno = 10;
         private const int cantidadMaxTiradasPorTurno = 2;
-        Turno turno = new Turno();
         Turno[] turnos = new Turno[12];
         public int TurnoActual = 0;
+
+        public int PuntuacionActual { get{
+            int suma = 0;
+                for(int i = 0 ; i< Turno.turnosMaximos ; ++i){
+                if(turnos[i] != null){                    
+                    suma += turnos[i].cantidadDePinosTirados ;
+
+                    if(turnos[i].esSpare && i< turnos.Length-1 && turnos[i+1] != null){
+                        suma+= turnos[i+1].cantidadDePinosTirada1;
+                    }
+
+                    if(turnos[i].esStrike && i< turnos.Length-1 && turnos[i+1] != null){
+                        suma+= turnos[i+1].cantidadDePinosTirados;
+
+                        if(turnos[i+1].esStrike && i< turnos.Length-2 && turnos[i+2] != null){
+                            suma+= turnos[i+2].cantidadDePinosTirada1;
+                        }
+
+                        
+                    }
+
+                }
+            }
+            return suma;
+            } 
+        }
+
         public bool ValidarPinos(int pinos)
         {
             if (pinos < 0) return false;
@@ -32,31 +63,30 @@ namespace BowlingKata
 
         public void RealizarTirada(int pinos)
         {
-            // if(TurnoActual == 0){
-            //     turnos[0]= new Turno();
-            // }
+            if(TurnoActual == 0 && turnos[0] == null){
+                turnos[0]= new Turno();
+            }
 
-            turno.cantidadTiradasActuales++;
+            turnos[TurnoActual].cantidadTiradasActuales++;
 
-            TirarPinos(pinos);
+            if(turnos[TurnoActual].cantidadTiradasActuales==1){
+                turnos[TurnoActual].cantidadDePinosTirada1 = TirarPinos(pinos);
+            }
+            else{
+                turnos[TurnoActual].cantidadDePinosTirada2 = TirarPinos(pinos);
+            }
 
-            if (turno.cantidadTiradasActuales >= cantidadMaxTiradasPorTurno || cantidadPinosDelTurno == 0)
+            if (turnos[TurnoActual].cantidadTiradasActuales >= cantidadMaxTiradasPorTurno || cantidadPinosDelTurno == 0)
             {
                 ResetearTurno();
             }
-
-            // if(pinosRestantes ==  0 && turnos[TurnoActual].cantidadTiradasActuales == 0){
-            //     turnos[TurnoActual].esStrike = true;
-            // }else if(pinosRestantes == 0){
-            //     turnos[TurnoActual].esSpare = true;
-            // }
-
         }
         void ResetearTurno()
         {
             cantidadPinosDelTurno = 10;
-            turno.cantidadTiradasActuales = 0;
             TurnoActual++;
+            if(TurnoActual >= turnos.Length) return;
+            turnos[TurnoActual] = new Turno();
         }
 
         public int CalcularPuntuacion(int cantidadBolosTirados)
@@ -67,8 +97,8 @@ namespace BowlingKata
 
         public int ObtenerTiradasBonificadas(int turnoJugado, string tipoJugada)
         {
-            if (turnoJugado >= turno.turnosMaximos - 1 && tipoJugada == "strike") return 2;
-            if (turnoJugado >= turno.turnosMaximos - 1 && tipoJugada == "spare") return 1;
+            if (turnoJugado >= Turno.turnosMaximos - 1 && tipoJugada == "strike") return 2;
+            if (turnoJugado >= Turno.turnosMaximos - 1 && tipoJugada == "spare") return 1;
             return 0;
         }
     }
@@ -78,9 +108,11 @@ namespace BowlingKata
         public const int cantidadMaxTiradasPorTurno = 2;
         public int cantidadTiradasActuales = 0;
         public bool habilitado = true;
-        public bool esSpare;
-        public bool esStrike;
-        public int cantidadDePinosTirados;
-        public int turnosMaximos = 10;
+        public bool esSpare => cantidadDePinosTirada1 <10 && cantidadDePinosTirados == 10;
+        public bool esStrike => cantidadDePinosTirada1 == 10;
+        public int cantidadDePinosTirados => (cantidadDePinosTirada1+cantidadDePinosTirada2);
+        public int cantidadDePinosTirada1;
+        public int cantidadDePinosTirada2;
+        public static int turnosMaximos = 10;
     }
 }

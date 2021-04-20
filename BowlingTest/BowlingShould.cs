@@ -66,6 +66,57 @@ namespace BowlingTest
             Assert.AreEqual(resultado, esperado);
         }
 
+        [TestCase(20, 4, 3, 3, 3, 5, 2)]
+        [TestCase(1, 1)]
+        //[TestCase(12,10,10,10,10,10,10,10,10,10,10,10,10)]
+        public void ValidarPuntuacionDespuesDeTiradas(int puntuacionEsperada, params int[] jugadas)
+        {
+            //Given
+
+            //When
+            foreach (var jugada in jugadas)
+            {
+                bowling.RealizarTirada(jugada);
+            }
+            //Assert
+            Assert.AreEqual(puntuacionEsperada, bowling.PuntuacionActual);
+        }
+
+        [TestCase(20, 3,7,5,0)]// turno 0 = 15   TOTAL = 20;
+        //[TestCase(12,10,10,10,10,10,10,10,10,10,10,10,10)]
+        public void ValidarPuntuacionConSpare(int puntuacionEsperada, params int[] jugadas)
+        {
+            //Given
+
+            //When
+            foreach (var jugada in jugadas)
+            {
+                bowling.RealizarTirada(jugada);
+            }
+            //Assert
+            Assert.AreEqual(puntuacionEsperada, bowling.PuntuacionActual);
+        }
+
+        [TestCase(20, 10,5,0)]// turno 0 = 15   TOTAL = 20;
+        [TestCase(30, 10,10,0,0)]//
+        [TestCase(60,10,10,10)]//turno 0 = 30, turno 1= 20, turno 3 = 10 Subtotal = 60
+        [TestCase(46,10,9,1,8,0)]// turno 0 = 20, turno 1 = 18 turno 2 = 8   Subtotal = 46
+        [TestCase(300,10,10,10,10,10,10,10,10,10,10,10,10)] // 300 Total
+        [TestCase(114,5,3,10,6,0,2,5,6,4,4,0,0,0,6,3,2,8,10,10,10)]// 114 total
+        public void ValidarPuntuacionConStrike(int puntuacionEsperada, params int[] jugadas)
+        {
+            //Given
+
+            //When
+            foreach (var jugada in jugadas)
+            {
+                bowling.RealizarTirada(jugada);
+            }
+            //Assert
+            Assert.AreEqual(puntuacionEsperada, bowling.PuntuacionActual);
+        }
+
+
         //Historia 10mo Turno
         [TestCase(8, "", 0)]
         [TestCase(9, "", 0)]
