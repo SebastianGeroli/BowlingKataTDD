@@ -44,7 +44,7 @@ namespace BowlingKata
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Tu puntaje Final es: {bowling.PuntuacionActual}");
-
+            Console.ReadLine();//Esperar input de usuario para cerrar el programa
         }
     }
 }
